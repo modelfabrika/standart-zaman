@@ -23,17 +23,26 @@
 
         .header {
             text-align: center;
-            padding: 25px;
+            padding: 30px;
             width: 100%;
             background: white;
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
         }
 
+        .brand-title {
+            font-weight: 800;
+            color: #333;
+            font-size: 28px;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
         h2 {
             color: var(--primary-blue);
-            margin: 10px 0;
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
         }
 
         .button-group {
@@ -41,18 +50,18 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 12px;
-            margin: 25px 15px;
-            max-width: 1000px;
+            margin: 35px 15px;
+            max-width: 1100px;
         }
 
         .btn {
-            padding: 14px 26px;
+            padding: 15px 28px;
             font-size: 13px;
             font-weight: 700;
             color: white;
             background-color: var(--primary-blue);
             border: none;
-            border-radius: 30px;
+            border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
@@ -62,11 +71,11 @@
         .btn:hover {
             background-color: var(--dark-blue);
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
         }
 
         .btn.active {
-            background-color: #222;
+            background-color: #222 !important;
+            color: white;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
         }
 
@@ -76,16 +85,16 @@
             background: white;
             padding: 15px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 50px;
         }
 
         .video-container {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 Oran */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
-            border-radius: 12px;
+            border-radius: 15px;
             background: #000;
         }
 
@@ -98,18 +107,6 @@
             border: none;
         }
 
-        /* Video yüklenirken görünecek mesaj */
-        .loading-info {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #666;
-            font-size: 14px;
-            text-align: center;
-            z-index: -1;
-        }
-
         @media (max-width: 600px) {
             .btn { width: 100%; }
         }
@@ -118,60 +115,43 @@
 <body>
 
     <div class="header">
-        <div style="font-weight: 800; color: #333; font-size: 26px;">ASO MODEL FABRİKA</div>
-        <h2>Standart Zaman Ölçümü Videoları</h2>
+        <div class="brand-title">ASO MODEL FABRİKA</div>
+        <h2>STANDART ZAMAN ÖLÇÜMÜ</h2>
     </div>
 
     <div class="button-group">
-        <button class="btn" onclick="play(this, '1AsfSokZ-ok2BDH_ksEsB7aYbc02bfU8X')">Ön Montaj</button>
+        <button id="firstBtn" class="btn" onclick="play(this, '1AsfSokZ-ok2BDH_ksEsB7aYbc02bfU8X')">Ön Montaj</button>
         <button class="btn" onclick="play(this, '1RwIo9yYn8SVVAfK9WXJvuIj14X4ztT9P')">D40 Montaj</button>
-        <button class="btn" onclick="play(this, '1RwIo9yYn8SVVAfK9WXJvuIj14X4ztT9P')">D25 Montaj</button>
+        <button class="btn" onclick="play(this, '1VX9_ARFDSXdpeJ3thtNyV1OjZNxGfSuG')">D25 Montaj</button>
         <button class="btn" onclick="play(this, '17jUbKu2loVpbh_BI4HisJrt6j88s-56T')">Fonksiyonel Test</button>
         <button class="btn" onclick="play(this, '1Wb5JCiHLSiYKhEI-Cf6VjjNYiY0DZfpO')">Paketleme</button>
     </div>
 
     <div class="main-stage">
         <div class="video-container">
-            <div class="loading-info">Video Hazırlanıyor...<br>Siyah ekran kalırsa tarayıcı çerezlerini kontrol edin.</div>
-            <iframe 
-                id="videoPlayer" 
-                src="" 
-                allow="autoplay; encrypted-media; fullscreen" 
-                allowfullscreen
-                sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
-            </iframe>
+            <iframe id="videoPlayer" src="" allow="autoplay; encrypted-media; fullscreen" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"></iframe>
         </div>
     </div>
 
     <script>
         function play(btn, id) {
-            // 1. Buton stillerini güncelle
             const buttons = document.querySelectorAll('.btn');
             buttons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            // 2. Video Player'ı güncelle
             const player = document.getElementById('videoPlayer');
-            
-            // Siyah ekranı aşmak için ?authuser=0 ekliyoruz
             const embedUrl = "https://drive.google.com/file/d/" + id + "/preview?authuser=0";
             
-            if (player.src !== embedUrl) {
-                // Önce temizle (bazı tarayıcılarda cache takılmasını önler)
-                player.src = "about:blank"; 
-                setTimeout(() => {
-                    player.src = embedUrl;
-                }, 100);
-            }
+            player.src = embedUrl;
         }
 
-        // Sayfa açıldığında otomatik olarak ilk videoyu yükle
-        window.onload = () => {
-            const firstButton = document.querySelector('.btn');
+        // Sayfa yüklendiğinde Ön Montaj'ın otomatik gelmesi için:
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstButton = document.getElementById('firstBtn');
             if (firstButton) {
                 play(firstButton, '1AsfSokZ-ok2BDH_ksEsB7aYbc02bfU8X');
             }
-        };
+        });
     </script>
 
 </body>
